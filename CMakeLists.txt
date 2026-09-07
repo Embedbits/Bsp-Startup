@@ -5,38 +5,38 @@
 
 #======================== Library configuration ===============================#
 # Publicly included directories to provide headers include
-set( Startup_PublicIncludeDirs
+set( StartUp_PublicIncludeDirs
     
 )
 
 
 # Privately included directories to provide headers include
-set( Startup_PrivateIncludeDirs
+set( StartUp_PrivateIncludeDirs
     ${CMAKE_CURRENT_SOURCE_DIR}
 )
 
 
 # Source files list for current library generation
-set( Startup_SourceFiles
-    Startup.c
+set( StartUp_SourceFiles
+    StartUp.c
 )
 
 
 # List of public header files provided by the current library
-set( Startup_PublicHeaders 
-    Startup_Types.h
-    Startup_Port.h 
+set( StartUp_PublicHeaders 
+    StartUp_Types.h
+    StartUp_Port.h 
 )
 
 
 # List of dependent libraries that are publicly used by the current library
-set( Startup_PublicDependentLibs
+set( StartUp_PublicDependentLibs
     Ral_Lib 
 )
 
 
 # List of dependent libraries that are privately used by the current library
-set( Startup_PrivateDependentLibs
+set( StartUp_PrivateDependentLibs
     Nvic_Lib
     Rcc_Lib
     BspMain_Lib
@@ -45,15 +45,15 @@ set( Startup_PrivateDependentLibs
 
 #========================== Library generation ================================#
 # Create library
-add_library(Startup_Lib STATIC ${Startup_SourceFiles})
+add_library(StartUp_Lib STATIC ${StartUp_SourceFiles})
 
 
 # Include necessary libraries to the target
-target_link_libraries( Startup_Lib
+target_link_libraries( StartUp_Lib
     PUBLIC 
-        ${Startup_PublicDependentLibs} 
+        ${StartUp_PublicDependentLibs} 
     PRIVATE 
-        ${Startup_PrivateDependentLibs}
+        ${StartUp_PrivateDependentLibs}
 )
 
 
@@ -64,7 +64,7 @@ set(PUBLIC_HEADERS_DIR ${CMAKE_CURRENT_BINARY_DIR}/PublicHeaders)
 file(MAKE_DIRECTORY ${PUBLIC_HEADERS_DIR})
 
 # Process all public headers
-foreach(PublicHeader IN LISTS Startup_PublicHeaders)
+foreach(PublicHeader IN LISTS StartUp_PublicHeaders)
     
     # Copy (or configure) only the public header there
     configure_file(
@@ -77,19 +77,19 @@ endforeach()
 
 
 # Set include directories for the created target
-target_include_directories( Startup_Lib
+target_include_directories( StartUp_Lib
     PUBLIC
         $<BUILD_INTERFACE:${PUBLIC_HEADERS_DIR}>
         $<INSTALL_INTERFACE:include>
-        Startup_PublicIncludeDirs
+        StartUp_PublicIncludeDirs
     PRIVATE
-        ${Startup_IncludeDirs}
-        Startup_PrivateIncludeDirs
+        ${StartUp_IncludeDirs}
+        StartUp_PrivateIncludeDirs
 )
 
 
 # Print status message
-message(STATUS "Startup_Lib library created")
+message(STATUS "StartUp_Lib library created")
 
 #========================= Documentation configuration ========================#
 if(DOXYGEN_AVAILABLE STREQUAL "ON")
