@@ -70,14 +70,14 @@ void StartUp_Handler( void )
     StartUp_InitGlobalVariables();
     StartUp_InitNullGlobalVariables();
 
-    /* 2: Execute static class constructors */
-    StartUp_RunClassConstructors();
-    
-    /* 3: Disable all interrupts */
+    /* 2: Disable all interrupts */
     Nvic_Set_InterruptsInactive();
 
-    /* 4: Initialize stack pointer, vector table and StartUp handler through NVIC driver */
+    /* 3: Initialize vector table, priority grouping and FPU through NVIC driver */
     Nvic_Init();
+
+    /* 4: Execute static class constructors (after FPU is enabled) */
+    StartUp_RunClassConstructors();
 
     /* 5: Initialize default clock */
     rcc_ConfigStruct_t defaultClockConfig;
