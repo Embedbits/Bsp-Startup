@@ -25,13 +25,13 @@ set( StartUp_SourceFiles
 # List of public header files provided by the current library
 set( StartUp_PublicHeaders 
     StartUp_Types.h
-    StartUp_Port.h 
+    StartUp_Port.h
 )
 
 
 # List of dependent libraries that are publicly used by the current library
 set( StartUp_PublicDependentLibs
-    Ral_Lib 
+    Ral_Lib
 )
 
 
@@ -81,10 +81,9 @@ target_include_directories( StartUp_Lib
     PUBLIC
         $<BUILD_INTERFACE:${PUBLIC_HEADERS_DIR}>
         $<INSTALL_INTERFACE:include>
-        StartUp_PublicIncludeDirs
+        ${StartUp_PublicIncludeDirs}
     PRIVATE
-        ${StartUp_IncludeDirs}
-        StartUp_PrivateIncludeDirs
+        ${StartUp_PrivateIncludeDirs}
 )
 
 

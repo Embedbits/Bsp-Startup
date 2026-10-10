@@ -1,4 +1,9 @@
 /**
+ * \defgroup StartUp StartUp
+ * \brief StartUp module
+ */
+
+/**
  * \author Mr.Nobody
  * \file StartUp_Types.h
  * \ingroup StartUp

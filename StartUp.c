@@ -23,6 +23,9 @@ static void StartUp_RunClassDestructors( void );
 static void StartUp_InitGlobalVariables( void );
 static void StartUp_InitNullGlobalVariables( void );
 
+void _init( void );
+void _fini( void );
+
 /* ========================== SYMBOLIC CONSTANTS ============================ */
 
 /** Value of major version of SW module */
@@ -37,6 +40,17 @@ static void StartUp_InitNullGlobalVariables( void );
 /* =============================== MACROS =================================== */
 
 /* ========================== EXPORTED VARIABLES ============================ */
+
+/**
+ * \brief Handle of the firmware image for C++ static object destructors.
+ *
+ * Fallback for linking without the compiler startup files (-nostartfiles);
+ * defined weak so the crtbegin.o definition wins when the startup files ARE
+ * linked (a strong definition collides with it - multiple definition,
+ * Bug AB#962). C++ static objects with destructor are registered by
+ * __cxa_atexit() with this handle.
+ */
+__attribute__(( weak )) void * __dso_handle = &__dso_handle;
 
 /* =========================== LOCAL VARIABLES ============================== */
 
@@ -98,6 +112,32 @@ void StartUp_Handler( void )
 
     /* 9: De-initialize Vector table */
     Nvic_Deinit();
+}
+
+
+/**
+ * \brief Initialization hook of the C library (__libc_init_array).
+ *
+ * Fallback for linking without the compiler startup files (-nostartfiles);
+ * defined weak so the crti.o definition wins when the startup files ARE linked
+ * (Bug AB#962). Constructors are executed by \ref StartUp_RunClassConstructors.
+ */
+__attribute__(( weak )) void _init( void )
+{
+    return;
+}
+
+
+/**
+ * \brief Finalization hook of the C library (__libc_fini_array).
+ *
+ * Fallback for linking without the compiler startup files (-nostartfiles);
+ * defined weak so the crti.o definition wins when the startup files ARE linked
+ * (Bug AB#962). Destructors are executed by \ref StartUp_RunClassDestructors.
+ */
+__attribute__(( weak )) void _fini( void )
+{
+    return;
 }
 
 /* ================================ TASKS =================================== */
