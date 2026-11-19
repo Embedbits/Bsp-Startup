@@ -80,6 +80,10 @@ startUp_ModuleVersion_t StartUp_Get_ModuleVersion( void )
  */
 void StartUp_Handler( void )
 {
+    /* 0: Enable FPU - initialization of the global variables may be compiled to library
+     *    code using FPU registers (memcpy / memset) */
+    Nvic_Set_FpuActive();
+
     /* 1: Initialize global variables */
     StartUp_InitGlobalVariables();
     StartUp_InitNullGlobalVariables();
@@ -87,7 +91,7 @@ void StartUp_Handler( void )
     /* 2: Disable all interrupts */
     Nvic_Set_InterruptsInactive();
 
-    /* 3: Initialize vector table, priority grouping and FPU through NVIC driver */
+    /* 3: Initialize vector table and priority grouping through NVIC driver (FPU already enabled in step 0) */
     Nvic_Init();
 
     /* 4: Execute static class constructors (after FPU is enabled) */
@@ -112,6 +116,9 @@ void StartUp_Handler( void )
 
     /* 9: De-initialize Vector table */
     Nvic_Deinit();
+
+    /* 10: Reset handler has no caller to return to (LR = 0xFFFFFFFF after reset) - the MCU is reset */
+    Nvic_Set_SystemReset();
 }
 
 
